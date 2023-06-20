@@ -74,8 +74,11 @@ npm start
 
 ## Run the application
 
-Launch your application from your browser by entering `http://localhost:3000` in the address bar (changing the port number from `3000` to whatever you configured in `.env`).
+Launch your application from your browser by entering `http://localhost:5000` in the address bar (changing the port number from `5000` to whatever you configured in `.env`).
 
 Click the "Call Now!" button. The application should read a welcome message and then transfer the call to your target phone number (`DESTINATION_PHONE_NUMBER` in `.env`).
+
+## Inbound call
+Place a call to your Vonage number, and it will be routed to the web browser user.
 
 
