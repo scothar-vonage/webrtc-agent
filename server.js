@@ -47,7 +47,7 @@ app.get("/webhooks/answer", (req, res) => {
         endpoint: [
           {
             type: "app",
-            user: "supportuser",
+            user: process.env.WEBRTC_USER,
           },
         ],
       },
