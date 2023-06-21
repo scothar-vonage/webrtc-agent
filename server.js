@@ -27,6 +27,7 @@ app.get("/auth/:userid", (req, res) => {
 app.get("/webhooks/answer", (req, res) => {
   console.log("Answer:");
   console.log(req.query);
+
   let ncco;
 
   const to = req.query.to;
@@ -35,11 +36,11 @@ app.get("/webhooks/answer", (req, res) => {
    * This is an inbound call which I will connect
    * to my app user via WebRTC
    */
-  if (to === "18335808845") {
+  if (to === process.env.VONAGE_NUMBER) {
     ncco = [
       {
         action: "talk",
-        text: "Please wait while we connect you .",
+        text: "Please wait while we connect you.",
       },
       {
         action: "connect",
@@ -53,6 +54,8 @@ app.get("/webhooks/answer", (req, res) => {
       },
     ];
   } else {
+    const dest = JSON.parse(req.query.custom_data).dial;
+
     /*
      * This is an outbound call from the app user to a
      * destination phone number.
@@ -68,12 +71,13 @@ app.get("/webhooks/answer", (req, res) => {
         endpoint: [
           {
             type: "phone",
-            number: process.env.DESTINATION_PHONE_NUMBER,
+            number: dest,
           },
         ],
       },
     ];
   }
+
   res.json(ncco);
 });
 

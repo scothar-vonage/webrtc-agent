@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", async () => {
    * and hide the Call Now button
    */
   btnCall.addEventListener("click", () => {
-    application.callServer(application.me.name);
+    application.callServer(application.me.name, "phone", {
+      dial: "14083142771",
+    });
     toggleCallStatusButton("in_progress");
   });
 });
