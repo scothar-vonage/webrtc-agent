@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const response = await fetch("/auth/supportuser");
   const jwt = await response.json();
   let blink = false;
+  const nameService = await fetch("/services/getConversationName").then((res) =>
+    res.json()
+  );
+  const conversationName = nameService.name;
+  console.log(conversationName);
 
   // Create a new NexmoClient instance and authenticate with the JWT
   let client = new NexmoClient();
@@ -10,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   notifications.innerHTML = `You are logged in as ${application.me.name}`;
 
   let conversation = null;
+  let textConversation = null;
 
   /*
    * Process call events
@@ -49,8 +55,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
+  btnSend.addEventListener("click", () => {
+    console.log(`Sending message: ${msg.value}`);
+    sendMessage(msg.value);
+  });
+
   /*
-   *Whenever we click the call button, trigger a call to the support number
+   * When we click the call button, trigger a call to the support number
    * and hide the Call Now button
    */
   btnCall.addEventListener("click", () => {
@@ -59,6 +70,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     toggleCallStatusButton("in_progress");
   });
+
+  async function sendMessage(msg) {
+    try {
+      if (textConversation === null) {
+        console.log("Creating a new conversation");
+        textConversation = await application.newConversationAndJoin({
+          params: { name: conversationName },
+        });
+      }
+      textConversation.sendText(msg);
+    } catch (e) {
+      console.error("Error creating a conversation and joining ", e);
+    }
+  }
 });
 
 function toggleCallStatusButton(state) {

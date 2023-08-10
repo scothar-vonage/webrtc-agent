@@ -37,6 +37,9 @@ h1 {
   font-size:22px;
   text-align: center;
 }
+.button-send {
+  display: inline-block;
+}
 
 .button-answer {
   background-color:blue; 
